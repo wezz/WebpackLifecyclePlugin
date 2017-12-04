@@ -4,7 +4,7 @@ A Lifecycle plugin for webpack
 ## Installation
 
 ```shell
-npm install davanmonet --save-dev
+npm install webpack-lifecycle-plugin --save-dev
 ```
 
 ## Usage
