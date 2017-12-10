@@ -9,20 +9,68 @@ module.exports = class LifecyclePlugin
 	{
 		const pluginOptions = this.options;
 		// https://webpack.js.org/api/compiler/#event-hooks
-		const hooksToTrack = ["run", "compilation", "after-compile", "watch-run", "emit", "done"];
-		hooksToTrack.forEach((hook) =>
+		const hooksWithOneParam = [
+			"after-plugins",
+			"after-resolvers",
+			"before-run",
+			"run",
+			"watch-run",
+			"normal-module-factory",
+			"context-module-factory",
+			"before-compile",
+			"compile",
+			"this-compilation",
+			"compilation",
+			"make",
+			"after-compile",
+			"should-emit",
+			"emit",
+			"after-emit",
+			"done",
+			"failed"
+		];
+		const hooksWithTwoParams = ["invalid"]
+
+		const hooksWithoutParam = [
+			"entry-option",
+			"environment",
+			"after-environment",
+			"need-additional-pass",
+			"watch-close"
+		];
+
+
+		hooksWithOneParam
+		.filter(x => typeof pluginOptions[x] === "function")
+		.forEach((hook) =>
 		{
-			if (typeof pluginOptions[hook] === "function")
+			compiler.plugin(hook, function(paramOne, callback)
 			{
-				compiler.plugin(hook, function(compilation, callback)
-				{
-					pluginOptions[hook](compilation, this.options, pluginOptions);
-					if (typeof callback === "function")
-					{
-						callback();
-					}
-				});
-			}
+				pluginOptions[hook](paramOne, this.options, pluginOptions);
+				(typeof callback === "function") && callback();
+			});
+		});
+
+		hooksWithTwoParams
+		.filter(x => typeof pluginOptions[x] === "function")
+		.forEach((hook) =>
+		{
+			compiler.plugin(hook, function(paramOne, paramTwo, callback)
+			{
+				pluginOptions[hook](paramOne, paramTwo, this.options, pluginOptions);
+				(typeof callback === "function") && callback();
+			});
+		});
+
+		hooksWithoutParam
+		.filter(x => typeof pluginOptions[x] === "function")
+		.forEach((hook) =>
+		{
+			compiler.plugin(hook, function(callback)
+			{
+				pluginOptions[hook](this.options, pluginOptions);
+				(typeof callback === "function") && callback();
+			});
 		});
 	}
 }
