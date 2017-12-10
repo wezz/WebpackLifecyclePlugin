@@ -6,7 +6,7 @@
 # Build Output
 /build
 /build.
-/dist
+#/dist
 /.tscache
 bin
 obj
@@ -130,7 +130,7 @@ targetindex.json
 contentindex.json
 
 # distribution files
-dist
+#dist
 
 # Tmp
 /.tmp
