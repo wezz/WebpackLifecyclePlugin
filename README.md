@@ -20,13 +20,7 @@ module.exports = {
 }
 ```
 ## Note
-This plugin currently supports the following hooks
-
-* run
-* compilation
-* after-compile
-* watch-run
-* emit
-* done
+This plugin currently supports all the documented webpack hooks.
+Not all hooks have been tested. Add an issue (with reproducable code) to the repo if problem occur.
 
 To read more about Hooks look at the [webpack documentation](https://webpack.js.org/api/compiler/#event-hooks)
